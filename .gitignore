@@ -1,0 +1,18 @@
+# Ignorar carpetas y archivos de cache Python 
+__pycache__/
+*.pyc
+
+# Archivos de configuración de entorno
+.env
+
+# Archivos y carpetas temporales
+.DS_Store
+Thumbs.db
+
+# Carpetas de logs
+logs/
+*.log
+
+# Archivos generados Visual Code
+.vscode/
+.idea/
