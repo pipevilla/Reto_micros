@@ -20,5 +20,5 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 USER appuser
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-#CMD ["python", "service_2\main.py"]
+
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001"]

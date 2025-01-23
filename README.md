@@ -40,12 +40,37 @@ El despliegue utiliza AWS CloudFormation para crear un clúster EKS, configurar 
 
 Estructura del Proyecto
 
-/
-|-- service-1/                # Código y Dockerfile del Servicio 1
-|-- service-2/                # Código y Dockerfile del Servicio 2
+//Local
+|-- service_1/                # Código y Dockerfile del Servicio 1
+|   |-- main.py               # Código principal del Servicio 1
+|   |-- Dockerfile            # Dockerfile para construir la imagen del Servicio 1
+|   |-- requirements.txt      # Archivo con requisitos de librerias necesarias para el Servicio 1
+|
+|-- service_2/                # Código y Dockerfile del Servicio 2
+|   |-- main.py               # Código principal del Servicio 2
+|   |-- Dockerfile            # Dockerfile para construir la imagen del Servicio 2
+|   |-- requirements.txt      # Archivo con requisitos de librerias necesarias para el Servicio 2
+|
 |-- docker-compose.yml        # Configuración para entorno local Docker
-|-- cloudformation/
-    |-- eks-cluster.yml       # Plantilla para el clúster EKS y sus recursos como VPC, subnets, nodos, etc.
+|
+
+//AWS
+|-- iac/                            # Código YAML en CloudFormation para despliegue de la IaC
+|   |-- EKS.yaml                    # Código principal para el despliegue de toda la IaC del proyecto
+|-- service_1/                      # Código y Dockerfile del Servicio 1
+|   |-- main.py                     # Código principal del Servicio 1
+|   |-- service-1-deployement.yaml  # Archivo con el deployement EKS para el Servicio 1
+|   |-- service-1-service.yaml      # Archivo con servicio (EKS) para el Servicio 1
+|   |-- Dockerfile                  # Dockerfile para construir la imagen del Servicio 1
+|   |-- requirements.txt            # Archivo con requisitos de librerias necesarias para el Servicio 1
+|
+|-- service_2/                      # Código y Dockerfile del Servicio 2
+|   |-- main.py                     # Código principal del Servicio 2
+|   |-- service-2-deployement.yaml  # Archivo con el deployement EKS para el Servicio 2
+|   |-- service-2-service.yaml      # Archivo con servicio (EKS) para el Servicio 2
+|   |-- Dockerfile                  # Dockerfile para construir la imagen del Servicio 2
+|   |-- requirements.txt            # Archivo con requisitos de librerias necesarias para el Servicio 2
+|
 
 
 Pasos para Ponerlo en a correr la solución:
