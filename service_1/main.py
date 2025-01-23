@@ -8,7 +8,7 @@ SECRET_KEY = "007secret"
 @app.post("/generate-token/")
 def generate_token():
     payload = {
-        "user": "007_user",
+        "mission": "Agent 007, you accomplished the mission!",
         "exp": datetime.datetime.now() + datetime.timedelta(minutes=5)
     }
     token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")

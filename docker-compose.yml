@@ -9,11 +9,3 @@ services:
     build: ./service_2
     ports:
       - "8001:8001"
-
-
-# services:
-#   retomicros:
-#     image: retomicros
-#     build:
-#       context: .
-#       dockerfile: ./Dockerfile

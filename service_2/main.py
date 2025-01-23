@@ -12,8 +12,8 @@ def validate_token(authorization: str = Header(None)):
     token = authorization.split(" ")[1]  # <token>
     try:
         decoded = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-        return {"status": "valid", "user": decoded["user"]}
+        return {"Status": "Valid token!", "Mission:": decoded["mission"]}
     except jwt.ExpiredSignatureError:
-        raise HTTPException(status_code=401, detail="Token expired: >5min")
+        raise HTTPException(status_code=401, detail="Token expired, >5min... Try again agent!")
     except jwt.InvalidTokenError:
-        raise HTTPException(status_code=401, detail="Invalid token")
+        raise HTTPException(status_code=401, detail="Invalid token, you shall not pass!")
