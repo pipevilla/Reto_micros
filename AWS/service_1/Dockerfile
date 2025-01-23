@@ -23,5 +23,5 @@ USER appuser
 EXPOSE 8000
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-#CMD ["python", "service_1\main.py"]
+
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
