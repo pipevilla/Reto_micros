@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  service_1:
+    build: ./service_1
+    ports:
+      - "8000:8000"
+    networks:
+      - microservices-network
+  service_2:
+    build: ./service_2
+    ports:
+      - "8001:8001"
+    networks:
+      - microservices-network
+
+networks:
+  microservices-network:
+    driver: bridge
