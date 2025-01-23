@@ -5,14 +5,15 @@ app = FastAPI()
 SECRET_KEY = "007secret"
 
 @app.post("/validate-token/")
-def validate_token(authorization: str = Header(None)):
-    if not authorization:
+def validate_token(Authorization: str = Header(None)):
+    if not Authorization:
         raise HTTPException(status_code=401, detail="Token missing")
 
-    token = authorization.split(" ")[1]  # <token>
+    token = Authorization.split(" ")[1]  # <token>
     try:
         decoded = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-        return {"Status": "Valid token!", "Mission:": decoded["mission"]}
+        return {"user": "Valid token, you can pass!", "Mission": decoded["Mission"]}
+        #return {"Status": "Valid token!", "Mission:": decoded["mission"]}
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Token expired, >5min... Try again agent!")
     except jwt.InvalidTokenError:
