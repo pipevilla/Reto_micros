@@ -9,14 +9,17 @@ SECRET_KEY = "007secret"
 @app.post("/generate-token/")
 def generate_token():
     payload = {
-        "Mission": "Agent 007, you accomplished the mission!",
+        "Mission": "Valid token Agent 007, you accomplished the mission!",
         "exp": datetime.datetime.now() + datetime.timedelta(minutes=5)
     }
     token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
     
     if token:
         result = communicate_with_service_2(token)
-        return {"Response:": result.get("Mission")}
+        return {
+            "Response": result.get("Mission"),
+            "Token": token  # Aquí incluimos el valor del token en la respuesta
+        }
 
 
 def communicate_with_service_2(token):
