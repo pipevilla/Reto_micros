@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: service-1
-        image: <your-dockerhub-username>/service-1:latest
+        image: 182399685065.dkr.ecr.us-east-1.amazonaws.com/ecr1:s1
         ports:
         - containerPort: 8000
         env:

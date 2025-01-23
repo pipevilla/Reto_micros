@@ -15,8 +15,8 @@ spec:
         app: service-2
     spec:
       containers:
-      - name: service-b
-        image: <your-dockerhub-username>/service-2:latest
+      - name: service-2
+        image: 182399685065.dkr.ecr.us-east-1.amazonaws.com/ecr1:s2
         ports:
         - containerPort: 8001
         env:
