@@ -27,7 +27,7 @@ def generate_token():
 
 # Función para comunicarse con el servicio 2 y validar el token
 def communicate_with_service_2(token):
-    url = "http://service-2.default.svc.cluster.local/validate-token"
+    url = "http://service-2.default.svc.cluster.local:8001/validate-token"
     headers = {"Authorization": f"Token: {token}"}
     # Realizamos una solicitud POST al servicio 2 con el token en los encabezados
     response = requests.post(url, headers=headers)
