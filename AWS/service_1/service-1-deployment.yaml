@@ -23,4 +23,4 @@ spec:
         - name: SECRET_KEY
           value: "007secret"
         - name: SERVICE_2_URL
-          value: "http://service-2.default.svc.cluster.local/validate-token"
+          value: "http://service-2:8001/validate-token"
