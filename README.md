@@ -73,7 +73,7 @@ Estructura del Proyecto
 |
 
 
-Pasos para Ponerlo en a correr la solución:
+Pasos para poner  a correr la solución en diferentes ambientes:
 
 Ambiente local:
 
@@ -88,51 +88,73 @@ Ambiente local:
 
     docker-compose up --build
 
-4) Probar los servicios 1 y 2:
+4) Probar los servicios 1 y 2 usando POSTMAN:
 
 Servicio 1: http://localhost:8000/generate-token/
 
 Servicio 2: http://localhost:8001/validate-token
+    
 
-5) Instala Postman o cURL para lanzar las solicitudes POST y poder probar funcionalidad
+5) Instala POSTMAN para lanzar las solicitudes POST y poder probar funcionalidad:
 
+    -Para probar el servicio-1, solo debes enviar una peticion tipo POST al endpoint local: http://localhost:8000/generate-token/ y te debe retornar el JSON con un token válido.
+    -Para probar el servicio 2, debes primero generar un token válido llamando el servicio-1 y adicionar en el header de POSTMAN un key=Autorization y value=bearer <token a validar>
+    -Puedes probar el servicio 2 con token inválido (malformado por ejemplo) o con uno válido pero expirado (mas de 5min)
 ---------
 
 En ambiente AWS usando EKS:
 
-1) Configura las credenciales de AWS CLI en tu máquina local:
+1) Instala AWS CLI 2 y configura las credenciales de AWS CLI 2 en tu máquina local:
 
-    aws configure (y sigue los pasos)
+    aws configure (y sigue los pasos poniendo tu access key y secret key)
 
 2) Crear la Infraestructura con CloudFormation, usando el archivo yaml en el repo y usando la CLI, con este comando:
 
     aws cloudformation create-stack --stack-name eks-microservices-stack --template-body https://raw.githubusercontent.com/pipevilla/Reto_micros/refs/heads/main/AWS/iac/EKS.yaml --capabilities CAPABILITY_NAMED_IAM
 
-3) Configurar linea de comandos K8s con kubectl
+    O bien maualmente por consola cargando el archivo YAML (para efectos prácticos).
+
+3) Crear un repositorio en ECR:
+    aws ecr create-repository --repository-name ecr1
+
+4) Generar imágenes de los microservicios (de forma local con docker):
+    docker compose build
+
+5) Listo imágenes para tener el ID y luego poder subirlas a ECR:
+    docker images
+
+6) Tagueo las 2 imágenes generadas usando el ID de la cuenta AWS y al final el nombre del repo ECR:
+    docker tag b69c98f731f3 182399685065.dkr.ecr.us-east-1.amazonaws.com/ecr1:s1
+    docker tag 0ac6b054e157 182399685065.dkr.ecr.us-east-1.amazonaws.com/ecr1:s2
+
+7) Subo las imágenes al repo ECR:
+    docker push 182399685065.dkr.ecr.us-east-1.amazonaws.com/ecr1:s1
+    docker push 182399685065.dkr.ecr.us-east-1.amazonaws.com/ecr1:s2
+
+8) Configurar linea de comandos K8s con kubectl
 
 Actualiza el contexto de kubectl:
 
-    aws eks update-kubeconfig --region <region> --name <eks-cluster-name>
+    aws eks update-kubeconfig --name eks-cluster
 
 4) Verifica el estado del clúster:
 
     kubectl get nodes
 
-5) Desplegar los Servicios en el Clúster
+5) Desplegar los Servicios en el Clúster aplicando los manifiestos de los micros y de los servicios que están en el repo:
 
-Usa los archivos YAML en el repo para los despliegues y servicios de Kubernetes.
-
-6) Aplica los manifiestos:
-
-    kubectl apply -f service-a-deployment.yml
-    kubectl apply -f service-b-deployment.yml
+    kubectl apply -f service-1-deployment.yaml
+    kubectl apply -f service-2-deployment.yaml
+    kubectl apply -f service-1-service.yaml
+    kubectl apply -f service-2-service.yaml
 
 7) Verifica los pods y servicios:
 
     kubectl get pods
-    kubectl get svc
+    kubectl get services
+    -Obtengo el External-IP (nombre DNS del endpoint expuesto desde el balanceador)
 
-8) Probar los Servicios
+8) Probar los Servicios con POSTMAN:
 
 Obtén la dirección IP del servicio A:
 
@@ -140,6 +162,17 @@ Obtén la dirección IP del servicio A:
 
 9) Prueba los endpoints usando Postman o cURL.
 
+    -Para probar el servicio-1, solo debes enviar una peticion tipo POST al endpoint externo expuesto por el balanceador: puede ser similar a esta:
+        http://af529636947f84c2ea70c44bd99076e8-490164342.us-east-1.elb.amazonaws.com:8000/generate-token
+    Te debe retornar el JSON con un token válido.
+    
+    -Para probar el servicio 2, debes primero generar un token válido llamando el servicio-1, usando la URL del endpoint expuesta por el balanceador (obtenida en el punto 7) similar a esta:
+        http://ac5492fb42abf4372bb1082d8bfc913f-1317130741.us-east-1.elb.amazonaws.com:8001/validate-token
+    y adicionar en el header de POSTMAN un key=Autorization y value=bearer <token a validar>
+    
+    -Puedes probar el servicio 2 con token inválido (malformado por ejemplo) o con uno válido pero expirado (mas de 5min)
+
+10) Celebrar que funcionó toda la implementación! :D 
 
 -----------
 
